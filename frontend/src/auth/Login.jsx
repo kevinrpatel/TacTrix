@@ -27,7 +27,7 @@ export default function Login() {
       formdata.append('email', email);
       formdata.append('password', pass);
 
-      const res = await axios.post('http://localhost:8080/tic-tac-toe/login.php', formdata);
+      const res = await axios.post('http://tac-trix.wuaze.com/apis/login.php', formdata);
 
       if (res.data) {
         const name = res.data.data.name;

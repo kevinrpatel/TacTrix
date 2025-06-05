@@ -1,27 +1,30 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
 
+// Enable CORS for Vercel frontend
 const io = new Server(server, {
   cors: {
-   // origin: "http://localhost:5173", // React app port
-    origin: "https://tactrix.vercel.app", 
+    origin: ["https://tac-trix.vercel.app"], // ✅ your Vercel frontend
     methods: ["GET", "POST"],
     credentials: true
   }
 });
 
+// Optional static files
 app.use(express.static('public'));
+app.use(cors());
 
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
 
   socket.on('create_room', ({ roomcode, player1_id }) => {
     socket.join(roomcode);
-    console.log(`Socket ${socket.id} created and joined room ${roomcode}`);
+    console.log(`Room ${roomcode} created by ${player1_id}`);
     io.to(roomcode).emit('room_created', { roomcode, player1_id });
   });
 
@@ -29,7 +32,7 @@ io.on('connection', (socket) => {
     const rooms = io.sockets.adapter.rooms;
     if (rooms.has(roomcode)) {
       socket.join(roomcode);
-      console.log(`Socket ${socket.id} joined room ${roomcode}`);
+      console.log(`Player ${player2_id} joined room ${roomcode}`);
       io.to(roomcode).emit('player_joined', { roomcode, player2_id });
     } else {
       socket.emit('error_message', `Room ${roomcode} does not exist.`);
@@ -46,7 +49,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

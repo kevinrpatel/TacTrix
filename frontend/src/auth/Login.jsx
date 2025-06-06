@@ -21,20 +21,15 @@ export default function Login() {
   });
 
   // Handle form submission
-  const handleSubmit = async ({ email, pass }) => {
+ const handleSubmit = async ({ email, pass }) => {
     try {
-      const res = await axios.post(
-        'https://tac-trix.wuaze.com/apis/login.php',
-        { email, password: pass }, // sending JSON data
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: false,
-        }
-      );
+      const formdata = new FormData();
+      formdata.append('email', email);
+      formdata.append('password', pass);
 
-      if (res.data.status === "true") {
+      const res = await axios.post('https://tac-trix.wuaze.com/apis/login.php', formdata);
+
+      if (res.data) {
         const name = res.data.data.name;
         const player1_id = res.data.data.id;
 
@@ -42,15 +37,20 @@ export default function Login() {
         sessionStorage.setItem("id", player1_id);
 
         alert("Login successfully");
+
+        // Normal redirect to selection menu (no room code check)
         nav('/SelectionMenu');
+
       } else {
-        alert(res.data.message || 'Failed to sign in. Please try again!');
+        alert('Failed to sign in. Please try again!');
       }
     } catch (error) {
       console.error("Login Error:", error);
       alert("Something went wrong!");
     }
   };
+
+
 
   return (
     <div className='d-flex justify-content-center align-items-center min-vh-100'

@@ -40,7 +40,7 @@ export default function RoomAccess() {
     formdata.append('game_status', game_status);
 
     try {
-      const res = await axios.post('http://tac-trix.wuaze.com/apis/create_room.php', formdata);
+      const res = await axios.post('https://tac-trix.wuaze.com/apis/create_room.php', formdata);
 
       if (res.data.status === true) {
         const roomcode = res.data.room_code;

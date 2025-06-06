@@ -164,7 +164,7 @@ export default function GameBoard() {
   formData.append('total_moves', totalMoves);
 
   try {
-    const res = await axios.post('http://tac-trix.wuaze.com/apis/game_history.php', formData);
+    const res = await axios.post('https://tac-trix.wuaze.com/apis/game_history.php', formData);
 
     if (res.data.status === true) {
       console.log("Game history saved successfully:", res.data.message);

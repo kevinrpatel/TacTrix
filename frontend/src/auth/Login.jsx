@@ -27,7 +27,11 @@ export default function Login() {
       formdata.append('email', email);
       formdata.append('password', pass);
 
-      const res = await axios.post('https://tac-trix.wuaze.com/apis/login.php', formdata);
+       const res = await axios.post(
+      'https://tac-trix.wuaze.com/apis/login.php',
+      formdata,
+      { withCredentials: true }
+    );
 
       if (res.data) {
         const name = res.data.data.name;

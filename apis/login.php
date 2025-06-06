@@ -2,8 +2,8 @@
 include 'connection.php';
 session_start();
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin:https://tac-trix.vercel.app');
-header('Access-Control-Allow-Methods: GET, POST');
+header('Access-Control-Allow-Origin: https://tac-trix.vercel.app');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 $response = array();
